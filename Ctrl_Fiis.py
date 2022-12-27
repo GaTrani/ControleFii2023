@@ -30,11 +30,13 @@ with sync_playwright() as p:
     pagina.locator('#history-timeframe-selector').click()
     pagina.keyboard.press('ArrowUp')
     pagina.keyboard.press('Enter')    
-    historicoPreco = pagina.locator('//*[@id="__next"]/div/div/div/div[2]/main/div/div[8]/div/div/div[3]/div/table/tbody').text_content()
+    historicoPreco = []
+    #historicoPreco = pagina.locator('//*[@id="__next"]/div/div/div/div[2]/main/div/div[8]/div/div/div[3]/div/table/tbody').text_content().split()
 
+    historicoPreco = pagina.locator('//*[@id="__next"]/div/div/div/div[2]/main/div/div[8]/div/div/div[3]/div/table').text_content().split()
     
     print('-----', historicoPreco)
-    #print(len(historicoPreco))
+    print(len(historicoPreco))
 
     #pagina.close()
     browser.close()
