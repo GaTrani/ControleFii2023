@@ -15,13 +15,28 @@ with sync_playwright() as p:
         listaAtivos.append(pagina.locator(linha).text_content())
         
     print(listaAtivos)'''
-    link = 'https://statusinvest.com.br/fundos-imobiliarios/busca-avancada'    
+    
+   
+    '''link = 'https://fiis.com.br/lista-de-fundos-imobiliarios/'
+    pagina.goto(link)
+    qtd = pagina.locator('//*[@id="bucafiis"]/form/label/span').text_content().split()
+    qtd = int(qtd[0])'''
+
+
+    link = 'https://statusinvest.com.br/fundos-imobiliarios/busca-avancada'
     pagina.goto(link)
     pagina.get_by_role('Button', name='Buscar').click()
-    print(pagina.locator('//*[@id="list-result"]/div/div[1]/div[2]/div/table/tbody').text_content())
-
-    for row in pagina.get_by_role('list-result').all():
-        print(row.text_content())
-
-    #//*[@id="list-result"]/div/div[1]/div[2]/div/table/tbody/tr[1]/td[1]/a/div/span
-    #//*[@id="list-result"]/div/div[1]/div[2]/div/table/tbody/tr[61]/td[1]/a/div/span
+    #pagina.locator('//*[@id="list-result"]/div/div[2]/div/input').fill('TODOS')
+    pagina.get_by_role('select-wrapper').fill('TODOS')
+    pagina.keyboard.press('ArrowUp')
+    pagina.keyboard.press('ArrowDown')
+    pagina.keyboard.press('Enter')   
+    time.sleep(5)
+    print(qtd)
+    listaAtivos = []
+'''
+    for i in range(1, qtd):
+        linha = '//*[@id="list-result"]/div/div[1]/div[2]/div/table/tbody/tr[' + str(i) + ']/td[1]/a/div/span'
+        listaAtivos.append(pagina.locator(linha).text_content())
+        print(listaAtivos)
+'''
