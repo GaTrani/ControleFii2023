@@ -26,10 +26,12 @@ with sync_playwright() as p:
     link = 'https://statusinvest.com.br/fundos-imobiliarios/busca-avancada'
     pagina.goto(link)
     pagina.get_by_role('Button', name='Buscar').click()
-    #pagina.locator('//*[@id="list-result"]/div/div[2]/div/input').fill('TODOS')
-    pagina.get_by_role('select-wrapper').fill('TODOS')
-    pagina.keyboard.press('ArrowUp')
-    pagina.keyboard.press('ArrowDown')
+    pagina.locator('//*[@id="list-result"]/div/div[2]/div/input').click()    
+    
+
+    pagina.select_option('select-wrapper', 'TODOS').click()
+    #pagina.keyboard.press('ArrowUp')
+    #pagina.keyboard.press('ArrowUp')
     pagina.keyboard.press('Enter')   
     time.sleep(5)
     print(qtd)
