@@ -14,12 +14,16 @@ with sync_playwright() as p:
     #pagina.get_by_role('Button', name='Buscar').click()
     dados = pagina.locator('//*[@id="carbon_fields_fiis_dividends-2"]/div[2]/div[2]/div/div/div/div').inner_text().split('\n')
     print(dados)'''
-
+    #codigo funcionando!!
     link = 'https://statusinvest.com.br/fundos-imobiliarios/busca-avancada'
     pagina.goto(link)
     pagina.get_by_role('Button', name='Buscar').click()
-    pagina.get_by_role('select-dropdown dropdown-trigger').click()
-    
+    pagina.locator('//*[@id="list-result"]/div/div[2]/div').click()   
+    time.sleep(2)
+    pagina.keyboard.press('ArrowDown')
+    pagina.keyboard.press('ArrowDown')
+    pagina.keyboard.press('Enter')
+    time.sleep(2)
     dados = pagina.locator('//*[@id="list-result"]/div/div[1]/div[2]/div/table/tbody').inner_text().split('\t')
     print(dados)
     print(type(dados))
