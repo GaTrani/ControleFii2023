@@ -1,0 +1,24 @@
+from playwright.sync_api import sync_playwright
+from playwright.sync_api import expect
+import time
+
+
+with sync_playwright() as p:
+    browser = p.chromium.launch(channel="chrome")
+    navegador = p.chromium.launch(headless=False) #removendo ou deixando TRUE nao aparecerá o navegador
+    pagina = navegador.new_page()
+
+    '''link = 'https://statusinvest.com.br/fundos-imobiliarios/busca-avancada'
+    link = 'https://fiis.com.br/afhi11/'
+    pagina.goto(link)
+    #pagina.get_by_role('Button', name='Buscar').click()
+    dados = pagina.locator('//*[@id="carbon_fields_fiis_dividends-2"]/div[2]/div[2]/div/div/div/div').inner_text().split('\n')
+    print(dados)'''
+
+    link = 'https://statusinvest.com.br/fundos-imobiliarios/busca-avancada'
+    pagina.goto(link)
+    pagina.get_by_role('Button', name='Buscar').click()
+    pagina.get_by_role('select-dropdown dropdown-trigger', 'TODOS')
+    dados = pagina.locator('//*[@id="list-result"]/div/div[1]/div[2]/div/table/tbody').inner_text().split('\t')
+    print(dados)
+    print(type(dados))
