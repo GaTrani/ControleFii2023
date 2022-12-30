@@ -18,7 +18,8 @@ with sync_playwright() as p:
     link = 'https://statusinvest.com.br/fundos-imobiliarios/busca-avancada'
     pagina.goto(link)
     pagina.get_by_role('Button', name='Buscar').click()
-    pagina.get_by_role('select-dropdown dropdown-trigger').select_option('TODOS')
+    pagina.get_by_role('select-dropdown dropdown-trigger').fill('TODOS')
+    
     dados = pagina.locator('//*[@id="list-result"]/div/div[1]/div[2]/div/table/tbody').inner_text().split('\t')
     print(dados)
     print(type(dados))
