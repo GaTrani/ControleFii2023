@@ -27,3 +27,13 @@ with sync_playwright() as p:
     dados = pagina.locator('//*[@id="list-result"]/div/div[1]/div[2]/div/table/tbody').inner_text().split('\t')
     print(dados)
     print(type(dados))
+
+    #teste secundario
+    novosDados = []
+    j = 0
+    print('------------------------', len(int(dados))/12)
+    for i in range(0, len(int(dados))/12):
+        novosDados[i] = dados[j]
+        j+= 12
+
+    #print(novosDados)
