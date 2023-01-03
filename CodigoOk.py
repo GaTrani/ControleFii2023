@@ -41,10 +41,10 @@ with sync_playwright() as p:
     listaGeral = []
     j = 0
     i = 0
-    semDY = 0
+    semDYeLiq = 0
     for i in range(0, qtdAtivos):
         if(dados[j+3] == '0,00' or dados[j+6] == '0,00'):
-            semDY+=1
+            semDYeLiq+=1
         else:
             ativo = dados[j].replace('\narrow_forward\n', '')
             ticker = ativo[-6::]
@@ -77,7 +77,7 @@ with sync_playwright() as p:
             listaGeral.append(dicio.copy())
         j = j + 13
     print(listaGeral)
-    print('--', len(tickers), 'semDY', semDY)
+    print('--', len(tickers), 'semDY', semDYeLiq)
     print('--DADOS COLETADOS COM SUCESSO!')
     print('--PASSO 2 INICIADO.')
 
@@ -86,9 +86,11 @@ with sync_playwright() as p:
     for i in range(0, len(tickers)):
         link2 = 'https://fiis.com.br/' + tickers[i]
         pagina.goto(link2)
-        
+        pagina.keyboard.press('F5')
         print(tickers[i])
-        dividendos = pagina.locator('//*[@id="carbon_fields_fiis_dividends-2"]/div[2]/div[2]/div/div/div/div/div[2]').inner_text()
+        #erro --- print(pagina.locator('/html/body/div[2]/span[1]'))
+            
+        dividendos = expect(pagina.locator('//*[@id="carbon_fields_fiis_dividends-2"]/div[2]/div[2]/div/div/div/div/div[2]'))
         print(dividendos)
-    
+        
 
