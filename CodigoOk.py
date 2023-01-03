@@ -22,16 +22,53 @@ with sync_playwright() as p:
 
     qtdAtivos = round((len(dados)/13))
     tickers = []
-    dicionario = {}
-    print(dados)
-    print(qtdAtivos)
+    
+    #CAGR (Compound Annual Growth Rate ou taxa de crescimento anual composta), indica a taxa de crescimento anual de dividendos em dinheiro por cota nos últimos 3 anos
+    dicio = {'Ticker': '', 
+            'Preco': '', 
+            'Gestao': '', 
+            'DY': '', 
+            'P/VP': '', 
+            'Valor Patr Cota': '', 
+            'Liq. Media Diaria': '', 
+            'Percentual caixa': '', 
+            'DY CAGR': '',
+            'Valor CAGR': '',
+            'Num cotistas': '',
+            'Num cotas': '',
+            'Patrimonio': '',
+            'Ultimo Rendimento': ''}
+    listaGeral = []
     j = 0
+    i = 0
     for i in range(0, qtdAtivos):
-        print(dados[j])
+        print(i, qtdAtivos, j)
         ativo = dados[j].replace('\narrow_forward\n', '')
-        tickers.append(ativo[-4::])
+        ticker = ativo[-6::]
+        dicio['Ticker']             = ticker
+        dicio['Preco']              = dados[j+1]
+        dicio['Gestao']             = dados[j+2]
+        dicio['DY']                 = dados[j+3]
+        dicio['P/VP']               = dados[j+4]
+        dicio['Valor Patr Cota']    = dados[j+5]
+        dicio['Liq. Media Diaria']  = dados[j+6]
+        dicio['Percentual caixa']   = dados[j+7]
+        dicio['DY CAGR']            = dados[j+8]
+        dicio['Valor CAGR']         = dados[j+9]
+        dicio['Num cotistas']       = dados[j+10]
+        dicio['Num cotas']          = dados[j+11]
+        dicio['Patrimonio']         = dados[j+12]
+        texto = dados[j+13]    
+
+        #if para coletar o ultimo ativo por conta de nao conter o '\n'
+        if(i == qtdAtivos-1):              
+            dicio['Ultimo Rendimento'] = texto 
+        else:
+            indice = dados[j+13].index('\n')
+            dicio['Ultimo Rendimento']  = texto[:indice]
+
+        listaGeral.append(dicio.copy())
         j = j + 13
 
-    print('tickers', tickers)
-
-    print(tickers)
+    print('dicio: ', listaGeral)
+    
