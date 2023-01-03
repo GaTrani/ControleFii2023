@@ -86,7 +86,7 @@ with sync_playwright() as p:
     for i in range(0, len(tickers)):
         link2 = 'https://fiis.com.br/' + tickers[i]
         pagina.goto(link2)
-        pagina.keyboard.press('F5')
+        #pagina.keyboard.press('F5')
         print(tickers[i])
         #erro --- print(pagina.locator('/html/body/div[2]/span[1]'))
             
