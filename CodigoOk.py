@@ -45,6 +45,10 @@ with sync_playwright() as p:
         print(i, qtdAtivos, j)
         ativo = dados[j].replace('\narrow_forward\n', '')
         ticker = ativo[-6::]
+        if(ativo[-1::] == 'B'):
+            ticker = ativo[-7:-1:]
+        
+        tickers.append(ticker)
         dicio['Ticker']             = ticker
         dicio['Preco']              = dados[j+1]
         dicio['Gestao']             = dados[j+2]
@@ -58,7 +62,7 @@ with sync_playwright() as p:
         dicio['Num cotistas']       = dados[j+10]
         dicio['Num cotas']          = dados[j+11]
         dicio['Patrimonio']         = dados[j+12]
-        texto = dados[j+13]    
+        texto = dados[j+13]
 
         #if para coletar o ultimo ativo por conta de nao conter o '\n'
         if(i == qtdAtivos-1):              
@@ -71,4 +75,5 @@ with sync_playwright() as p:
         j = j + 13
 
     print('dicio: ', listaGeral)
+    print('tickers: ', tickers)
     
