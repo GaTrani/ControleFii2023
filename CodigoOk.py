@@ -41,39 +41,54 @@ with sync_playwright() as p:
     listaGeral = []
     j = 0
     i = 0
+    semDY = 0
     for i in range(0, qtdAtivos):
-        print(i, qtdAtivos, j)
-        ativo = dados[j].replace('\narrow_forward\n', '')
-        ticker = ativo[-6::]
-        if(ativo[-1::] == 'B'):
-            ticker = ativo[-7:-1:]
-        
-        tickers.append(ticker)
-        dicio['Ticker']             = ticker
-        dicio['Preco']              = dados[j+1]
-        dicio['Gestao']             = dados[j+2]
-        dicio['DY']                 = dados[j+3]
-        dicio['P/VP']               = dados[j+4]
-        dicio['Valor Patr Cota']    = dados[j+5]
-        dicio['Liq. Media Diaria']  = dados[j+6]
-        dicio['Percentual caixa']   = dados[j+7]
-        dicio['DY CAGR']            = dados[j+8]
-        dicio['Valor CAGR']         = dados[j+9]
-        dicio['Num cotistas']       = dados[j+10]
-        dicio['Num cotas']          = dados[j+11]
-        dicio['Patrimonio']         = dados[j+12]
-        texto = dados[j+13]
-
-        #if para coletar o ultimo ativo por conta de nao conter o '\n'
-        if(i == qtdAtivos-1):              
-            dicio['Ultimo Rendimento'] = texto 
+        if(dados[j+3] == '0,00' or dados[j+6] == '0,00'):
+            semDY+=1
         else:
-            indice = dados[j+13].index('\n')
-            dicio['Ultimo Rendimento']  = texto[:indice]
+            ativo = dados[j].replace('\narrow_forward\n', '')
+            ticker = ativo[-6::]
+            if(ativo[-1::] == 'B'):
+                ticker = ativo[-7:-1:]
+            
+            tickers.append(ticker)
+            dicio['Ticker']             = ticker
+            dicio['Preco']              = dados[j+1]
+            dicio['Gestao']             = dados[j+2]
+            dicio['DY']                 = dados[j+3]
+            dicio['P/VP']               = dados[j+4]
+            dicio['Valor Patr Cota']    = dados[j+5]
+            dicio['Liq. Media Diaria']  = dados[j+6]
+            dicio['Percentual caixa']   = dados[j+7]
+            dicio['DY CAGR']            = dados[j+8]
+            dicio['Valor CAGR']         = dados[j+9]
+            dicio['Num cotistas']       = dados[j+10]
+            dicio['Num cotas']          = dados[j+11]
+            dicio['Patrimonio']         = dados[j+12]
+            texto = dados[j+13]
 
-        listaGeral.append(dicio.copy())
+            #if para coletar o ultimo ativo por conta de nao conter o '\n'
+            if(i == qtdAtivos-1):              
+                dicio['Ultimo Rendimento'] = texto 
+            else:
+                indice = dados[j+13].index('\n')
+                dicio['Ultimo Rendimento']  = texto[:indice]
+
+            listaGeral.append(dicio.copy())
         j = j + 13
+    print(listaGeral)
+    print('--', len(tickers), 'semDY', semDY)
+    print('--DADOS COLETADOS COM SUCESSO!')
+    print('--PASSO 2 INICIADO.')
 
-    print('dicio: ', listaGeral)
-    print('tickers: ', tickers)
+
+    link2 = 'https://fiis.com.br/'
+    for i in range(0, len(tickers)):
+        link2 = 'https://fiis.com.br/' + tickers[i]
+        pagina.goto(link2)
+        
+        print(tickers[i])
+        dividendos = pagina.locator('//*[@id="carbon_fields_fiis_dividends-2"]/div[2]/div[2]/div/div/div/div/div[2]').inner_text()
+        print(dividendos)
+    
 
