@@ -76,4 +76,4 @@ with sync_playwright() as p:
 
     print('dicio: ', listaGeral)
     print('tickers: ', tickers)
-    
+
