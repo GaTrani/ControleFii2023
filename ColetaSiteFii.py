@@ -1,7 +1,13 @@
 from playwright.sync_api import sync_playwright
 from playwright.sync_api import expect
 import time
+import sqlite3, BD
 
+#CRIAR DATABASE
+database = sqlite3.connect('BancoDadosFii2023.db')
+c = database.cursor()
+
+BD.criarTabela()
 
 with sync_playwright() as p:
     browser = p.chromium.launch(channel="chrome")
@@ -33,8 +39,21 @@ with sync_playwright() as p:
         print('Ativo:', tickers[i])
 
         try:
-            dividendos = pagina.locator('//*[@id="carbon_fields_fiis_dividends-2"]/div[2]/div[2]/div/div/div/div/div[2]').inner_text()
-            #print(dividendos)
+            dados = pagina.locator('//*[@id="carbon_fields_fiis_dividends-2"]/div[2]/div[2]/div/div/div/div/div[2]').inner_text()
+            dados = dados.split()
+            print(dados)
+            linhas = int(len(dados)) / 7
+            #print(tickers[l], dados[cont + 0], dados[cont + 1], dados[cont + 3], dados[cont + 4], dados[cont + 7])
+            print('linha', linhas)         
+
+            
+            cont = 0
+            for l in range(0, linhas):
+                    for c in range(0, 1):
+                        BD.inserirat(tickers[l], dados[cont + 0], dados[cont + 1], dados[cont + 3], dados[cont + 4], dados[cont + 7])
+                        database.commit()
+                        cont += 8
+                        
         except TimeoutError:
             erroTimeOut+=1
         except:
