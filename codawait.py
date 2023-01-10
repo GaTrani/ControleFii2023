@@ -26,7 +26,7 @@ async def main():
                 tickers.append(dados[j])
                 j+=9
 
-        print(len(tickers))
+        print('novos ativos', len(tickers))
         link2 = 'https://fiis.com.br/'
 
         ativosComErro = []
