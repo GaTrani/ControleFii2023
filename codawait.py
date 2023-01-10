@@ -76,5 +76,7 @@ async def main():
     print('BANCO CONVERTIDO COM SUCESSO.')
     database.close()
 
-    await browser.close()
+    #await browser.close()
 asyncio.run(main())
+
+print('Fim')
