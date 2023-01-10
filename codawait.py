@@ -30,12 +30,12 @@ async def main():
             j+=9
 
         link2 = 'https://fiis.com.br/'
-
+        ativosComErro = []
         errosvariados = 0
         erroTimeOut = 0 #len(tickers)
-        for i in range(0, len(tickers)):
+        for i in range(0, 10):
             print('*******************************************')
-            print('Ativo:', tickers[i])
+            print('Ativo:', i, tickers[i])
             link2 = 'https://fiis.com.br/' + tickers[i]
             try:
                 await pagina.goto(link2, wait_until='load')                
@@ -51,17 +51,19 @@ async def main():
                         BD.inserirat(tickers[i], dados[cont + 0], dados[cont + 1], dados[cont + 3], dados[cont + 4], dados[cont + 7])
                         database.commit()
                         cont += 7
+                else:
+                    ativosComErro.append(tickers[i])
                 print('Contem', linhas, 'dados/linhas')
             except TimeoutError:
                 erroTimeOut+=1
             except Exception as e:
-                    errosvariados+= 1
-                    # Handle the exception and continue the loop
-                    print(f"Element not found: {e}")
-                    continue
+                errosvariados+= 1
+                # Handle the exception and continue the loop
+                print(f"Element not found: {e}")
+                continue
             linhas = 0 
 
             #page.locator("https://fiis.com.br/URPR11", waitUntil=["load"])
     await browser.close()
-
+    print('erros:', errosvariados, erroTimeOut)
 asyncio.run(main())
