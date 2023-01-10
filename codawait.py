@@ -1,4 +1,5 @@
-import asyncio, sqlite3,BD
+import asyncio, sqlite3,BD, os
+import pandas as pd
 from playwright.async_api import async_playwright
 
 
@@ -64,6 +65,21 @@ async def main():
             linhas = 0 
 
             #page.locator("https://fiis.com.br/URPR11", waitUntil=["load"])
-    await browser.close()
+    #await browser.close()
+
     print('erros:', errosvariados, erroTimeOut)
+    desktop = os.path.abspath("C:\\Users\\gabri\\OneDrive\\Área de Trabalho")
+
+    # Caminho do arquivo de saída
+    arquivo_saida = os.path.join(desktop, 'dadosBDFii2.xlsx')
+
+    # lê os dados da tabela 'tabela'
+    df = pd.read_sql_query("SELECT * from BDFii", database)
+
+    # salva os dados em um arquivo Excel
+    df.to_excel(arquivo_saida, index=False)
+
+    # fecha a conexão com o banco de dados
+    database.close()
+
 asyncio.run(main())
