@@ -1,6 +1,7 @@
 from playwright.sync_api import sync_playwright
+from playwright.async_api import async_playwright
 from playwright.sync_api import expect
-import sqlite3, BD, os
+import sqlite3, BD, os, asyncio
 import pandas as pd
 
 #CRIAR DATABASE
@@ -53,13 +54,15 @@ with sync_playwright() as p:
                     database.commit()
                     cont += 7
             print('linha', linhas)
+        except TimeoutError:
+            erroTimeOut+=1
         except Exception as e:
+                errosvariados+= 1
                 # Handle the exception and continue the loop
                 print(f"Element not found: {e}")
                 continue
         linhas = 0 
         
-
     desktop = os.path.abspath("C:\\Users\\gabri\\OneDrive\\Área de Trabalho")
 
     # Caminho do arquivo de saída
