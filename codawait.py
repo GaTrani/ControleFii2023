@@ -16,24 +16,25 @@ async def main():
         dados = await pagina.locator('//*[@id="upTo--default-fiis-table"]/div/table/tbody').inner_text()          
         dados = dados.split()
         qtd = int(len(dados)/9)
-        print('Total de ativos a coletar dados: ', qtd)
+        print('****************')
+        print('Total de ativos: ', qtd)
 
         j = 0
         tickers = []
-        print('NA?', dados[2])
+        
         for i in range(0, qtd):    
-            if(dados[j+2] != 'N/A'):        
+            if(dados[j+2] != 'N/A'):                        
                 tickers.append(dados[j])
-                j+=9
+            j+=9
 
-        print('novos ativos', len(tickers))
+        print('Total de ativos a coletar dados:', len(tickers))
         link2 = 'https://fiis.com.br/'
 
         ativosComErro = []
         errosvariados = 0
         erroTimeOut = 0
         for i in range(0, len(tickers)):
-            print('****************')
+            print('----------------')
             print('Ativo:', i, tickers[i])
             link2 = 'https://fiis.com.br/' + tickers[i]
             try:
