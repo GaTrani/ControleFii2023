@@ -43,18 +43,21 @@ with sync_playwright() as p:
         cont = 0
         try:
             print('*******************************************')
-            dados = pagina.locator('//*[@id="carbon_fields_fiis_dividends-2"]/div[2]/div[2]/div/div/div/div/div[2]').inner_text()
-            
-            if(len(dados) > 0):
-                dados = dados.split()
-                linhas = int(len(dados) / 7)            
-                print(tickers[i], dados[0], dados[1], dados[3], dados[4], dados[7])
-                for l in range(0, linhas):                    
-                    BD.inserirat(tickers[l], dados[cont + 0], dados[cont + 1], dados[cont + 3], dados[cont + 4], dados[cont + 7])
-                    database.commit()
-                    cont += 7
-            print('linha', linhas)            
-                  
+            precoAtivo = pagina.locator('//*[@id="carbon_fields_fiis_header-2"]/div/div/div[1]/div[2]/div/div[1]/p[1]/b').inner_text()
+            if(precoAtivo != '0,00'):
+                dados = pagina.locator('//*[@id="carbon_fields_fiis_dividends-2"]/div[2]/div[2]/div/div/div/div/div[2]').inner_text()
+                
+                if(len(dados) > 0):
+                    dados = dados.split()
+                    linhas = int(len(dados) / 7)            
+                    print(tickers[i], dados[0], dados[1], dados[3], dados[4], dados[7])
+                    for l in range(0, linhas):                    
+                        BD.inserirat(tickers[i], dados[cont + 0], dados[cont + 1], dados[cont + 3], dados[cont + 4], dados[cont + 7])
+                        database.commit()
+                        cont += 7
+                print('linha', linhas)            
+            else:
+                print('Ativo com preco 0,00')
         except TimeoutError:
             erroTimeOut+=1
         except:
@@ -65,19 +68,19 @@ with sync_playwright() as p:
         print('errosTimeOut', erroTimeOut)
 
 
-desktop = os.path.abspath("C:\\Users\\gabri\\OneDrive\\Área de Trabalho")
+    desktop = os.path.abspath("C:\\Users\\gabri\\OneDrive\\Área de Trabalho")
 
-# Caminho do arquivo de saída
-arquivo_saida = os.path.join(desktop, 'dadosBDFii2.xlsx')
+    # Caminho do arquivo de saída
+    arquivo_saida = os.path.join(desktop, 'dadosBDFii2.xlsx')
 
-# lê os dados da tabela 'tabela'
-df = pd.read_sql_query("SELECT * from BDFii", database)
+    # lê os dados da tabela 'tabela'
+    df = pd.read_sql_query("SELECT * from BDFii", database)
 
-# salva os dados em um arquivo Excel
-df.to_excel(arquivo_saida, index=False)
+    # salva os dados em um arquivo Excel
+    df.to_excel(arquivo_saida, index=False)
 
-# fecha a conexão com o banco de dados
-database.close()
+    # fecha a conexão com o banco de dados
+    database.close()
 
 
 
