@@ -1,5 +1,6 @@
 import sqlite3
-
+import pandas as pd
+import os
 
 #CRIAR DATABASE
 database = sqlite3.connect('BancoDadosFii2023.db')
@@ -32,3 +33,20 @@ def lerdadosat():
     cat = c.fetchall() #pesquisa na tabela inteira os dados
     database.commit()
     return cat
+
+def salvarComoExcel():
+    # Define caminho da área de trabalho
+    #desktop = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop') 
+    desktop = os.path.abspath("C:\\Users\\gabri\\OneDrive\\Área de Trabalho")
+
+    # Caminho do arquivo de saída
+    arquivo_saida = os.path.join(desktop, 'dadosBDFii2.xlsx')
+
+    # lê os dados da tabela 'tabela'
+    df = pd.read_sql_query("SELECT * from BDFii", database)
+
+    # salva os dados em um arquivo Excel
+    df.to_excel(arquivo_saida, index=False)
+
+    # fecha a conexão com o banco de dados
+    database.close()
