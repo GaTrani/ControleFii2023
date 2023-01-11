@@ -47,7 +47,7 @@ async def main():
                     dados = dados.split()
                     linhas = int(len(dados) / 7)                    
                     for l in range(0, linhas):                    
-                        BD.inserirat(tickers[i], dados[cont + 0], dados[cont + 1], dados[cont + 3], dados[cont + 4], dados[cont + 7])
+                        BD.inserirat(tickers[i], dados[cont + 0], dados[cont + 1], dados[cont + 3], dados[cont + 4], dados[cont + 6])
                         database.commit()
                         cont += 7
                 else:
