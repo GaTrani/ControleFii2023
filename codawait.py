@@ -33,7 +33,7 @@ async def main():
         ativosComErro = []
         errosvariados = 0
         erroTimeOut = 0
-        for i in range(0, len(tickers)):
+        for i in range(265, len(tickers)):
             print('----------------')
             print('Ativo:', i, tickers[i])
             link2 = 'https://fiis.com.br/' + tickers[i]
@@ -43,6 +43,8 @@ async def main():
                 linhas = 0
                 cont = 0
                 dados = await pagina.locator('//*[@id="carbon_fields_fiis_dividends-2"]/div[2]/div[2]/div/div/div/div/div[2]').inner_text()
+                min52sem = await pagina.locator('//*[@id="carbon_fields_fiis_quotations_chart-2"]/div[1]/div[2]/div[2]/div[1]/span[2]').inner_text()
+                max52sem = await pagina.locator('//*[@id="carbon_fields_fiis_quotations_chart-2"]/div[1]/div[2]/div[3]/div[1]/span[2]').inner_text()
                 if(len(dados) > 0):
                     dados = dados.split()
                     linhas = int(len(dados) / 7)                    
